@@ -5,7 +5,8 @@ var exports = module.exports = {};
 
 var User = dataBase.define('user', {
     username: Sequelize.STRING,
-    email: Sequelize.STRING
+    email: Sequelize.STRING,
+    hash: Sequelize.STRING
 });
 
 User.sync();

@@ -3,6 +3,8 @@ const Vision = require('vision');
 const HapiSwagger = require('hapi-swagger');
 const server = require('./config/server').server;
 
+// setup auth
+require('./config/auth');
 // create routes
 require('./routes/routes');
 
@@ -22,5 +24,17 @@ server.register([
         options: swaggerOptions
     }
 ]);
+
+
+server.route({
+    method: 'GET',
+    path: '/protected',
+    config: {
+        auth: 'http-auth',
+        handler: (request, reply) => {
+            reply(`Welcome from hapi - ${request.auth.credentials.name}!`)
+        }
+    }
+});
 
 server.start();

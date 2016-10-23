@@ -16,6 +16,6 @@
     "vision": "^4.1.0",
     "sequelize" : "latest",
     "sqlite3" : "latest",
-    "underscore" : "latest"
-  }
+    "underscore" : "latest",
+    "http-auth" : "3.0.0"}
 }

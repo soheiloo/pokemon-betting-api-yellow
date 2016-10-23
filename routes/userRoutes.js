@@ -28,7 +28,8 @@ var createUserConfig = Server.createRouteConfigWithPayload(
     'Create new user',
     {
         username: Joi.string(),
-        email: Joi.string()
+        email: Joi.string(),
+        password: Joi.string()
     },
     {
         201: {
