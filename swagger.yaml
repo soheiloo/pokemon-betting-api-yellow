@@ -59,7 +59,7 @@ paths:
           in: path
           description: ID of user to fetch
           required: true
-          $ref: '#/descriptions/Id'
+          $ref: '#/definitions/Id'
       responses:
         200:
           description: user response
@@ -99,7 +99,7 @@ paths:
           in: path
           description: ID of the user to withdraw money from
           required: true
-          $ref: '#/descriptions/Id'
+          $ref: '#/definitions/Id'
         - name: amount
           in: path
           description: Amount of money to withdraw in ₽
@@ -121,7 +121,7 @@ paths:
           in: path
           description: ID of the user to deposit money to
           required: true
-          $ref: '#/descriptions/Id'
+          $ref: '#/definitions/Id'
         - name: amount
           in: path
           description: Amount of money to deposit in ₽
@@ -174,7 +174,7 @@ paths:
           in: path
           description: ID of the battle to fetch
           required: true
-          $ref: '#/descriptions/Id'
+          $ref: '#/definitions/Id'
       responses:
         200:
           description: battle response
