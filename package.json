@@ -11,11 +11,13 @@
   "dependencies": {
     "hapi": "^14.2.0",
     "hapi-swagger": "^6.2.2",
+    "http-auth": "3.0.0",
     "inert": "^4.0.1",
     "joi": "^9.0.4",
-    "vision": "^4.1.0",
-    "sequelize" : "latest",
-    "sqlite3" : "latest",
-    "underscore" : "latest",
-    "http-auth" : "3.0.0"}
+    "node-rest-client": "^2.0.1",
+    "sequelize": "latest",
+    "sqlite3": "latest",
+    "underscore": "latest",
+    "vision": "^4.1.0"
+  }
 }
