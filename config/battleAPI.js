@@ -1,16 +1,92 @@
-//var jayson = require('http://pokemon-battle.bid/api/v1/');
-//var jayson = require(__dirname + '/../..');
-var Client = require('node-rest-client').Client;
+var unirest = require('unirest');
+
+var toQueryString=function(obj){
+    var queryString='';
+    for(var propt in obj){
+        queryString+=propt+'='+obj[propt]+'&';
+    }
+    if(queryString=='')
+        return queryString;
+    else{
+        queryString=queryString.substring(0, queryString.length - 1);
+        return '?'+queryString;
+    }
+}
+
+//pokemon types routes
+exports.pokemonTypes=function(opts){
+    if(typeof opts==="undefined")
+        opts={};
+
+    return unirest.get("http://pokemon-battle.bid/api/v1/pokemon-types/"+toQueryString(opts))
+        .headers({'Accept': 'application/json'});
+};
 
 
-const client = new Client();
-exports.client = client;
+//Trainer routes
+exports.trainers=function(opts){
+    if(typeof opts==="undefined")
+        opts={};
+    if(opts['id']){
+        return unirest.get("http://pokemon-battle.bid/api/v1/trainers/"+opts.id)
+            .headers({'Accept': 'application/json'});
+    }
+    else{
+        return unirest.get("http://pokemon-battle.bid/api/v1/trainers/"+toQueryString(opts))
+            .headers({'Accept': 'application/json'});
+    }
+};
 
-client.registerMethod("trainers", "http://pokemon-battle.bid/api/v1/trainers/", "GET");
-client.registerMethod("battles", "http://pokemon-battle.bid/api/v1/battles/", "GET");
-client.registerMethod("pokemon-types", "http://pokemon-battle.bid/api/v1/pokemon-types/", "GET");
-client.registerMethod("pokemons", "http://pokemon-battle.bid/api/v1/pokemons/", "GET");
+//pokemon routes
+exports.pokemons=function(opts){
+    if(typeof opts==="undefined")
+        opts={};
+    if(opts['id']){
+        return unirest.get("http://pokemon-battle.bid/api/v1/pokemons/"+opts.id)
+            .headers({'Accept': 'application/json'});
+    }
+    else{
+        return unirest.get("http://pokemon-battle.bid/api/v1/pokemons/"+toQueryString(opts))
+            .headers({'Accept': 'application/json'});
+    }
+};
 
-client.methods.battles(function(data, response){
-    console.log(data);
-});
+//battle routes
+exports.battles=function(opts){
+    if(typeof opts==="undefined")
+        opts={};
+    if(opts['id']){
+        return unirest.get("http://pokemon-battle.bid/api/v1/battles/"+opts.id)
+            .headers({'Accept': 'application/json'});
+    }
+    else{
+        return unirest.get("http://pokemon-battle.bid/api/v1/battles/"+toQueryString(opts))
+            .headers({'Accept': 'application/json'});
+    }
+};
+
+exports.battleLocation=function(battleId){
+    return unirest.get("http://pokemon-battle.bid/api/v1/battles/"+battleId+"/location")
+        .headers({'Accept': 'application/json'});
+};
+
+exports.battleTeams=function(battleId,teamNum){
+    return unirest.get("http://pokemon-battle.bid/api/v1/battles/"+battleId+"/team"+teamNum)
+        .headers({'Accept': 'application/json'});
+};
+
+exports.battlePokemons=function(battleId,teamNum){
+    return unirest.get("http://pokemon-battle.bid/api/v1/battles/"+battleId+"/team"+teamNum+"/pokemons")
+        .headers({'Accept': 'application/json'});
+};
+
+exports.battleTrainer=function(battleId,teamNum){
+    return unirest.get("http://pokemon-battle.bid/api/v1/battles/"+battleId+"/team"+teamNum+"/trainer")
+        .headers({'Accept': 'application/json'});
+};
+
+//example of how to use it
+exports.battles({offset:1,limit:2,is_finished:false})
+    .end(function (response){
+        console.log(response.body);
+    });
