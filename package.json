@@ -17,5 +17,7 @@
     "sequelize" : "latest",
     "sqlite3" : "latest",
     "underscore" : "latest",
-    "http-auth" : "3.0.0"}
+    "hapi-auth-jwt2" : "latest",
+    "jsonwebtoken" : "latest"
+  }
 }

@@ -25,16 +25,4 @@ server.register([
     }
 ]);
 
-
-server.route({
-    method: 'GET',
-    path: '/protected',
-    config: {
-        auth: 'http-auth',
-        handler: (request, reply) => {
-            reply(`Welcome from hapi - ${request.auth.credentials.name}!`)
-        }
-    }
-});
-
 server.start();

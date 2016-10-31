@@ -1,6 +1,6 @@
 const User = require('../models/user').User;
 const _ = require('underscore');
-const auth = require('../config/auth')
+const auth = require('../config/auth');
 
 var exports = module.exports = {};
 
