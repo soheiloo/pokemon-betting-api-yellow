@@ -1,4 +1,5 @@
 # pokemon-betting-api-yellow
+[![Build Status](https://travis-ci.org/mariokaufmann/pokemon-betting-api-yellow.svg?branch=master)](https://travis-ci.org/mariokaufmann/pokemon-betting-api-yellow)
 
 ## Documentation
 The documentation is generated from [swagger.yaml](swagger.yaml)
