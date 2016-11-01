@@ -24,6 +24,7 @@ server.route({
 // Create new user
 var createUserConfig = new RouteConfigBuilder()
     .setDescription('Create new users')
+    .setAuth(false)
     .setPayloadSchema({
         username: Joi.string(),
         email: Joi.string(),
