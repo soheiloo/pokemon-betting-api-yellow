@@ -23,6 +23,12 @@ var validate = function (decoded, request, callback) {
     callback(null, true);
 };
 
+function createHash(password) {
+    var hash = crypto.createHash('MD5');
+    hash.update(password);
+    return hash.digest('hex');
+}
+
 server.register(jwtAuth, function (err) {
     if (err) {
         console.log(err);
@@ -41,7 +47,7 @@ server.register(jwtAuth, function (err) {
     var loginUserConfiguration = new RouteConfigBuilder()
         .setAuth(false)
         .setDescription('Login')
-        .setPayloadSchema({username: Joi.string(), hash: Joi.string()})
+        .setPayloadSchema({username: Joi.string(), password: Joi.string()})
         .setResponses({
             200: {
                 description: 'Logged in',
@@ -63,7 +69,8 @@ server.register(jwtAuth, function (err) {
                         username: request.payload.username
                     }
                 }).then(function (user) {
-                    if (user == undefined || user.hash != request.payload.hash) {
+                    var requestHash = createHash(request.payload.password);
+                    if (user == undefined || user.hash != requestHash) {
                         reply('Incorrect credentials').code(401);
                     } else {
                         var token = createToken(request);
@@ -83,9 +90,4 @@ server.register(jwtAuth, function (err) {
 });
 
 
-exports.createHash = function (username, password) {
-    // create password hash to store in db
-    var hash = crypto.createHash('MD5');
-    hash.update(password);
-    return hash.digest('hex');
-};
+exports.createHash = createHash;

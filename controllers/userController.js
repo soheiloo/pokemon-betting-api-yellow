@@ -19,7 +19,7 @@ exports.saveUser = function (request, reply) {
     var username = payload.username;
     var password = payload.password;
 
-    var hash = auth.createHash(username, password);
+    var hash = auth.createHash(password);
 
     User.create({
         username: username,
