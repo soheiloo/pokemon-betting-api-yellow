@@ -1,6 +1,6 @@
 const User = require('../models/user').User;
 const _ = require('underscore');
-const auth = require('../config/auth')
+const auth = require('../config/auth');
 
 var exports = module.exports = {};
 
@@ -19,7 +19,7 @@ exports.saveUser = function (request, reply) {
     var username = payload.username;
     var password = payload.password;
 
-    var hash = auth.createHash(username, password);
+    var hash = auth.createHash(password);
 
     User.create({
         username: username,
