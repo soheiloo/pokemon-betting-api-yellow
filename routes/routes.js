@@ -1,1 +1,2 @@
 require('./userRoutes');
+require('./battleRoutes');
