@@ -4,9 +4,32 @@ const dataBase = require('../config/database').dataBase;
 var exports = module.exports = {};
 
 var User = dataBase.define('user', {
-    username: Sequelize.STRING,
-    email: Sequelize.STRING,
-    hash: Sequelize.STRING
+
+    username:{ 
+    	type: Sequelize.STRING,
+    	//can be good for later
+    	//unique: true,
+    	//user name required
+    	allowNull: false
+    },
+
+    password: {
+    	type: Sequelize.STRING,
+    	defaultValue: 'password',
+    	allowNull: false
+    },
+
+    email: {
+    	type: Sequelize.STRING,
+    	defaultValue: 'email@email.com',
+    	allowNull: false
+    },
+
+    balance: {
+    	type:Sequelize.INTEGER,
+    	defaultValue: 0,
+    	allowNull: false
+    }
 });
 
 User.sync();

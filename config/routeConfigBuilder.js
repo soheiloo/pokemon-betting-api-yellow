@@ -24,6 +24,10 @@ RouteConfigBuilder.prototype.setPayloadSchema = function (payloadSchema) {
     return this;
 };
 
+RouteConfigBuilder.prototype.setParams = function(params){
+    this.params = params;
+    return this;
+};
 
 RouteConfigBuilder.prototype.build = function () {
     var result = {
@@ -33,12 +37,19 @@ RouteConfigBuilder.prototype.build = function () {
         plugins: {
             'hapi-swagger': {
                 responses: this.responses
-            }
-        }
+            }            
+        },
     };
 
-    if(this.payloadSchema != undefined){
-        result.validate = {payload: this.payloadSchema};
+    if(this.params !== undefined && this.payloadSchema !== undefined){
+        result.validate = {
+            params: this.params,
+            payload: this.payloadSchema
+        };
+    }else if (this.params != undefined && this.payloadSchema === undefined){
+        result.validate = {params: this.params};
+    } else if (this.params === undefined && this.payloadSchema != undefined){
+         result.validate = {payload: this.payloadSchema};
     }
 
     return result;

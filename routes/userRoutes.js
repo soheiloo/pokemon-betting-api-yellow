@@ -7,6 +7,7 @@ const RouteConfigBuilder = require('../config/routeConfigBuilder').RouteConfigBu
 // Get all users
 var getUsersConfig = new RouteConfigBuilder()
     .setDescription('List all users')
+    .setAuth(false)
     .setResponses({
         200: {
             description: 'Success',
@@ -21,15 +22,34 @@ server.route({
     config: getUsersConfig
 });
 
+// Get one user
+var getUserIdConfig = new RouteConfigBuilder()
+    .setDescription('Get one user by id')
+    .setAuth(false)
+    .setParams({
+        id: UserSchemata.userIdSchema
+    })
+    .setResponses({
+        200: {
+            description: 'Success',
+            schema: UserSchemata.userSchema,
+        }
+    })
+    .build();
+
+
+server.route({
+    method: 'GET',
+    path: '/users/{id}',
+    handler: UserController.getUserId,
+    config:getUserIdConfig
+});
+
 // Create new user
 var createUserConfig = new RouteConfigBuilder()
     .setDescription('Create new users')
     .setAuth(false)
-    .setPayloadSchema({
-        username: Joi.string(),
-        email: Joi.string(),
-        password: Joi.string()
-    })
+    .setPayloadSchema(UserSchemata.userSchema)
     .setResponses({
         201: {
             description: 'Created',
@@ -38,9 +58,34 @@ var createUserConfig = new RouteConfigBuilder()
     })
     .build();
 
+//Post a new user
 server.route({
     method: 'POST',
     path: '/users',
     handler: UserController.saveUser,
     config: createUserConfig
+});
+
+//Update a user based on it's id
+var patchUserConfig = new RouteConfigBuilder()
+    .setDescription('Udate a user based on it\'s id')
+    .setAuth(false)
+    .setParams({
+        id: UserSchemata.userIdSchema
+    })
+
+    .setPayloadSchema(UserSchemata.userSchema)
+    .setResponses({
+        200:{
+            description: 'Updated',
+            schema: UserSchemata.userSchema
+        }
+    })
+    .build();
+
+server.route({
+    method: 'PATCH',
+    path: '/users/{id}',
+    handler: UserController.updateUser,
+    config: patchUserConfig
 });
