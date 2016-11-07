@@ -45,6 +45,24 @@ server.route({
     config:getUserIdConfig
 });
 
+// Get currently authenticated user
+var getAuthenticatedUserConfig = new RouteConfigBuilder()
+    .setDescription('Get curently authenticated user')
+    .setResponses({
+        200: {
+            description: 'Success',
+            schema: UserSchemata.userSchema
+        }
+    })
+    .build();
+
+server.route({
+    method: 'GET',
+    path: '/users/me',
+    handler: UserController.getAuthenticatedUser,
+    config: getAuthenticatedUserConfig
+});
+
 // Create new user
 var createUserConfig = new RouteConfigBuilder()
     .setDescription('Create new users')

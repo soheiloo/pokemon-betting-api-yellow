@@ -11,11 +11,12 @@ const secret = 'OfP5JGgpYxXkWbnABc5dq/H7fhcUeDDbJQV+cSNi33165+t9QwKXW7VU40Qvplf+
 
 var exports = module.exports = {};
 
-function createToken(request) {
+function createToken(request, user) {
     return jwt.sign({
         auth: 'magic',
         agent: request.headers['user-agent'],
-        exp: Math.floor(new Date().getTime() / 1000) + 60 * 60 // one hour in seconds
+        exp: Math.floor(new Date().getTime() / 1000) + 60 * 60, // one hour in seconds
+        sub: user.id
     }, Buffer.from(secret, 'base64'));
 }
 
@@ -70,10 +71,10 @@ server.register(jwtAuth, function (err) {
                     }
                 }).then(function (user) {
                     var requestHash = createHash(request.payload.password);
-                    if (user == undefined || user.hash != requestHash) {
+                    if (user == undefined || user.password != requestHash) {
                         reply('Incorrect credentials').code(401);
                     } else {
-                        var token = createToken(request);
+                        var token = createToken(request, user);
                         reply(token).code(200);
                     }
                 });
