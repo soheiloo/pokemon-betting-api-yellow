@@ -24,6 +24,19 @@ exports.getUserId = function(request, reply){
     })
 };
 
+exports.getAuthenticatedUser = function(request, reply){
+    var userId = request.auth.credentials.sub;
+    User.findById(userId).then(function(user){
+        user = {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            balance: user.balance
+        };
+        reply(user).code(200);
+    })
+};
+
 exports.updateUser = function(request, reply){
     User.findById(request.params.id).then(function(user){
        for(var attrName in request.payload){
