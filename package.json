@@ -9,17 +9,20 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "asyncwait": "^1.0.2",
     "hapi": "^14.2.0",
+    "hapi-auth-jwt2": "latest",
     "hapi-swagger": "^6.2.2",
     "http-auth": "3.0.0",
     "inert": "^4.0.1",
     "joi": "^9.0.4",
+    "jsonwebtoken": "latest",
+    "memory-cache": "^0.1.6",
+    "request-promise": "^4.1.1",
     "sequelize": "latest",
     "sqlite3": "latest",
     "underscore": "latest",
     "unirest": "^0.5.1",
-    "vision": "^4.1.0",
-    "hapi-auth-jwt2" : "latest",
-    "jsonwebtoken" : "latest"
+    "vision": "^4.1.0"
   }
 }
