@@ -4,8 +4,7 @@ const battleClient = require('../config/battleClient');
 
 var exports = module.exports = {};
 
-exports.getBattles = function (request, reply) {
-    var queryString = request.params.query_string;
+function getBattlesForQuery(queryString, callback){
     var pairs = queryString.split("&");
     var lim = pairs.find(function (str) {
         return str.startsWith("limit")
@@ -19,6 +18,20 @@ exports.getBattles = function (request, reply) {
 
     battleClient.getBattles({limit: lim.split("=")[1], offset: offs.split("=")[1], is_finished: isF.split("=")[1]})
         .end(function (response) {
-            reply(response.body).code(200);
+            callback(response.body);
         })
+}
+
+exports.getBattles = function (request, reply) {
+    var queryString = request.params.query_string;
+    getBattlesForQuery(queryString, function(response){
+        reply(response).code(200);
+    });
+};
+
+exports.getNextBattles = function(callback){
+    var queryString = "limit=5&offset=0&is_finished=false";
+    getBattlesForQuery(queryString, function(response){
+        callback(response);
+    })
 };

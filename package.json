@@ -23,6 +23,8 @@
     "sqlite3": "latest",
     "underscore": "latest",
     "unirest": "^0.5.1",
-    "vision": "^4.1.0"
+    "vision": "^4.1.0",
+    "socket.io-client": "latest",
+    "cron": "latest"
   }
 }

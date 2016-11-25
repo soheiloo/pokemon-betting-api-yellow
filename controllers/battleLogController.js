@@ -6,7 +6,11 @@ const defaultText = 'No battle log found.';
 var exports = module.exports = {};
 
 exports.getBattleLog = function (request, reply) {
-    BattleLog.findById(request.params.id).then(function (battleLog) {
+    BattleLog.findOne({
+        where: {
+            battle_id: request.params.battle_id
+        }
+    }).then(function (battleLog) {
         if (battleLog == undefined) {
             battleLog = {text: defaultText};
         }

@@ -8,7 +8,7 @@ var getBattleLogConfig = new RouteConfigBuilder()
     .setDescription('Get log for a specific battle by id')
     .setAuth(false)
     .setParams({
-        id: Joi.number().integer()
+        battle_id: Joi.number().integer()
     })
     .setResponses({
         200: {
@@ -19,7 +19,7 @@ var getBattleLogConfig = new RouteConfigBuilder()
 
 server.route({
     method: 'GET',
-    path: '/battleLogs/{id}',
+    path: '/battleLogs/{battle_id}',
     handler: battleLogController.getBattleLog,
     config: getBattleLogConfig
 });
