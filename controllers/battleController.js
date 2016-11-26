@@ -1,4 +1,4 @@
-const User = require('../models/user').User;
+const Bet = require('../models/bet').Bet;
 const _ = require('underscore');
 const battleClient = require('../config/battleClient');
 
@@ -46,26 +46,22 @@ exports.getPots = function (request, reply) {
             var tId1=response.body.team1.trainer.id;
             var tId2=response.body.team2.trainer.id;
 
-            //TODO: should get bets from db
-            var bets=[
-                {id:0,battleId:battleId,trainerId:tId1,amount:100},
-                {id:1,battleId:battleId,trainerId:tId2,amount:20},
-                {id:2,battleId:battleId,trainerId:tId2,amount:50},
-                {id:3,battleId:battleId,trainerId:tId1,amount:200},
-                {id:4,battleId:battleId,trainerId:tId1,amount:80}];
+            bets=Bet.findAll({where:{battleId:battleId}}).
+                then(function(bets){
+                    var pot1=0;
+                    var pot2=0;
 
-            var pot1=0;
-            var pot2=0;
+                    bets.forEach(function(bet){
+                        if(bet.trainerId==tId1){
+                            pot1+=bet.amount;
+                        }
+                        else if(bet.trainerId==tId2){
+                            pot2+=bet.amount;
+                        }
+                    });
 
-            bets.forEach(function(bet){
-                if(bet.trainerId==tId1){
-                    pot1+=bet.amount;
-                }
-                else if(bet.trainerId==tId2){
-                    pot2+=bet.amount;
-                }
+                    reply([{trainerId: tId1, pot: pot1},{trainerId: tId2, pot: pot2}]).code(200);
+                });
+
             });
-
-            reply([{trainerId: tId1, pot: pot1},{trainerId: tId2, pot: pot2}]).code(200);
-        })
 };
