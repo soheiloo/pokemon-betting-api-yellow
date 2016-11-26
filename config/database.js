@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const Sqlite = require('sqlite3');
 
-new Sqlite.Database('data');
+new Sqlite.Database('data.sqlite');
 
 var exports = module.exports = {};
 
