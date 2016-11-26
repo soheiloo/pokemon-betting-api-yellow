@@ -1,5 +1,6 @@
 const BattleLog = require('../models/battleLog').BattleLog;
 const _ = require('underscore');
+const messageBus = require('../config/messageBus').messageBus;
 
 const defaultText = 'No battle log found.';
 
@@ -15,5 +16,12 @@ exports.getBattleLog = function (request, reply) {
             battleLog = {text: defaultText};
         }
         reply(battleLog).code(200);
+    });
+};
+
+exports.addNextEventListener = function(request, reply){
+    var battleId = request.params.battle_id;
+    messageBus.once(battleId, function(data){
+        reply(data).code(200);
     });
 };

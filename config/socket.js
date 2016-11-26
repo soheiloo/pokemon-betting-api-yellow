@@ -2,6 +2,7 @@ const io = require('socket.io-client');
 const CronJob = require('cron').CronJob;
 const BattleLog = require('../models/battleLog').BattleLog;
 const BattleController = require('../controllers/battleController');
+const messageBus = require('../config/messageBus').messageBus;
 
 var socket;
 
@@ -35,6 +36,10 @@ var job = new CronJob('00 9,19,29,39,49,59 * * * *', function () {
         });
 
         socket.on('message', function (data) {
+            // update long polling listeners
+            messageBus.emit(nextBattleId, data);
+
+            // save in db
             BattleLog.findOne({
                 where: {
                     battle_id: nextBattleId
