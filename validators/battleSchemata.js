@@ -13,3 +13,10 @@ var battleSchema = Joi.object({
 exports.battleSchema = battleSchema;
 
 exports.multipleBattlesSchema = Joi.array().items(battleSchema);
+
+var battlePot=Joi.object({
+    trainerId: Joi.number().integer().positive(),
+    pot:Joi.number().integer().positive()
+});
+exports.battlePot = battlePot;//{trainerId: Joi.number().integer().positive(), pot:Joi.number().integer().positive()};
+exports.battlePots= Joi.array().items(battlePot);
