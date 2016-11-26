@@ -12,7 +12,8 @@ var sequelize =
             storage: 'data.sqlite',
             define: {
                 timestamps: false
-            }
+            },
+            logging: false
         });
 
 // uncomment if db should be dropped on launch

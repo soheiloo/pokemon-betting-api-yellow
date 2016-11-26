@@ -7,8 +7,10 @@ const server = require('./config/server').server;
 require('./config/auth');
 // create routes
 require('./routes/routes');
-// start socket listening
+// start socket listening (automatic recording of battle logs)
 require('./config/socket');
+// setup live socket polling
+require('./config/messageBus');
 
 const swaggerOptions = {
     info: {
