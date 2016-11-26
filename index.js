@@ -7,6 +7,8 @@ const server = require('./config/server').server;
 require('./config/auth');
 // create routes
 require('./routes/routes');
+// start socket listening
+require('./config/socket');
 
 const swaggerOptions = {
     info: {
