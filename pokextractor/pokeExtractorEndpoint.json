@@ -1,0 +1,14 @@
+[
+    ["getAbilityByName", "ability"], 
+    ["getCharacteristicById", "characteristic"], 
+    ["getPokeathlonStatByName", "pokeathlon-stat"], 
+    ["getPokemonByName", "pokemon"], 
+    ["getPokemonColorByName", "pokemon-color"], 
+    ["getPokemonFormByName", "pokemon-form"], 
+    ["getPokemonHabitatByName", "pokemon-habitat"], 
+    ["getPokemonShapeByName", "pokemon-shape"], 
+    ["getPokemonSpeciesByName", "pokemon-species"], 
+    ["getStatByName", "stat"], 
+    ["getTypeByName", "type"], 
+    ["getLanguageByName", "language"]
+]

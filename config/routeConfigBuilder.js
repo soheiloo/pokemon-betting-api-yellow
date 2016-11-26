@@ -29,6 +29,12 @@ RouteConfigBuilder.prototype.setParams = function(params){
     return this;
 };
 
+RouteConfigBuilder.prototype.setQuery = function(query){
+    this.query = query;
+    return this;
+}
+
+
 RouteConfigBuilder.prototype.build = function () {
     var result = {
         tags: ['api'],
@@ -50,6 +56,8 @@ RouteConfigBuilder.prototype.build = function () {
         result.validate = {params: this.params};
     } else if (this.params === undefined && this.payloadSchema != undefined){
          result.validate = {payload: this.payloadSchema};
+    }else if (this.query !== undefined){
+        result.validate = {query:this.query};
     }
 
     return result;

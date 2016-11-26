@@ -1,0 +1,15 @@
+[
+    ["getEndpointsList", ""],
+    ["getAbilitiesList", "ability/"], 
+    ["getCharacteristicsList", "characteristic/"], 
+    ["getPokeathlonStatsList", "pokeathlon-stat/"], 
+    ["getPokemonsList", "pokemon/"], 
+    ["getPokemonColorsList", "pokemon-color/"], 
+    ["getPokemonFormsList", "pokemon-form/"], 
+    ["getPokemonHabitatsList", "pokemon-habitat/"], 
+    ["getPokemonShapesList", "pokemon-shape/"], 
+    ["getPokemonSpeciesList", "pokemon-species/"], 
+    ["getStatsList", "stat/"], 
+    ["getTypesList", "type/"], 
+    ["getLanguagesList", "language/"]
+]
