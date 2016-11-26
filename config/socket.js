@@ -23,26 +23,18 @@ function getNextFutureBattle(callback) {
 
 // start socket job
 var job = new CronJob('00 9,19,29,39,49,59 * * * *', function () {
-    console.log('cron job started');
     if (socket != undefined) {
         socket.disconnect();
     }
     getNextFutureBattle(function (nextBattle) {
         var nextBattleId = nextBattle.id;
-        console.log('Next battle has id: ' + nextBattleId);
-
         socket = io('ws://pokemon-battle.bid/battles/' + nextBattleId);
 
-        socket.on('connect', function () {
-            console.log('Connected.')
-        });
-
         socket.on('connect_error', function () {
-            console.log('Socket connect error');
+            console.log('Socket connect error for battle: ' + nextBattleId + '.');
         });
 
         socket.on('message', function (data) {
-            console.log('Received message: ' + data);
             BattleLog.findOne({
                 where: {
                     battle_id: nextBattleId
@@ -57,7 +49,6 @@ var job = new CronJob('00 9,19,29,39,49,59 * * * *', function () {
                     battleLog.text = battleLog.text + data + '\n';
                     battleLog.save();
                 }
-                console.log('Updated battle log with data ' + data + '.');
             });
         });
     });
@@ -65,4 +56,3 @@ var job = new CronJob('00 9,19,29,39,49,59 * * * *', function () {
     var nextBattle
 });
 job.start();
-console.log('Setup cron job.');
