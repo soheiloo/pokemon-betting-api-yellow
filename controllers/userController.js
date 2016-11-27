@@ -72,3 +72,32 @@ exports.saveUser = function (request, reply) {
         reply(user).code(201);
     })
 };
+
+exports.deposit = function (request, reply) {
+    var amount = request.params.amount;
+    var userId = request.auth.credentials.sub;
+    User.findById(userId).then(user => {
+        user.balance += amount;
+        user.save().then(() => {
+            reply().code(204);
+        }).catch(error => {
+            reply().code(500);
+        });
+    });
+};
+
+exports.withdraw = function (request, reply) {
+    var amount = request.params.amount;
+    var userId = request.auth.credentials.sub;
+    User.findById(userId).then(user => {
+        if (user.balance < amount) {
+            return reply('Insufficient funds').code(400);
+        }
+        user.balance -= amount;
+        user.save().then(() => {
+            reply().code(204);
+        }).catch(error => {
+            reply().code(500);
+        });
+    });
+};

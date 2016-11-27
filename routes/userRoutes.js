@@ -84,6 +84,49 @@ server.route({
     config: createUserConfig
 });
 
+//Deposit money
+var depositConfig = new RouteConfigBuilder()
+    .setDescription('Deposit money to current user\'s balance')
+    .setParams({
+      amount: UserSchemata.amountSchema
+    })
+    .setResponses({
+        204: {
+            description: 'Money deposited'
+        }
+    })
+    .build();
+
+server.route({
+    method: 'POST',
+    path: '/users/me/deposit/{amount}',
+    handler: UserController.deposit,
+    config: depositConfig
+});
+
+//Withdraw money
+var withdrawConfig = new RouteConfigBuilder()
+    .setDescription('Withdraw money from current user\'s balance')
+    .setParams({
+      amount: UserSchemata.amountSchema
+    })
+    .setResponses({
+        204: {
+            description: 'Money withdrawn'
+        },
+        400: {
+            description: 'Insufficient funds'
+        }
+    })
+    .build();
+
+server.route({
+    method: 'POST',
+    path: '/users/me/withdraw/{amount}',
+    handler: UserController.withdraw,
+    config: withdrawConfig
+});
+
 //Update a user based on it's id
 var patchUserConfig = new RouteConfigBuilder()
     .setDescription('Udate a user based on it\'s id')
