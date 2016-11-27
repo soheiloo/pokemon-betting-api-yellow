@@ -47,7 +47,13 @@ RouteConfigBuilder.prototype.build = function () {
         },
     };
 
-    if(this.params !== undefined && this.payloadSchema !== undefined){
+    if(this.params !== undefined && this.payloadSchema !== undefined && this.query !== undefined){
+        result.validate = {
+            params: this.params,
+            payload: this.payloadSchema,
+            query: this.query
+        };
+    }else if(this.params !== undefined && this.payloadSchema !== undefined){
         result.validate = {
             params: this.params,
             payload: this.payloadSchema
