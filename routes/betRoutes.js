@@ -6,7 +6,7 @@ const RouteConfigBuilder = require('../config/routeConfigBuilder').RouteConfigBu
 
 // Get all bets
 var getBetsConfig = new RouteConfigBuilder()
-    .setDescription('List all users')
+    .setDescription('List all bets')
     .setAuth(false)
     .setResponses({
         200: {
