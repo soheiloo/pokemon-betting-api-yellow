@@ -3,11 +3,6 @@ const P = new PokeXtractor();
 
 var exports = module.exports = {};
 
-var intervall = {
-    limit: 10,
-    offset: 34
-  }
-
 exports.getPokemons = function (request, reply) {
     var pokeList = [];
     var interval =  {
@@ -64,8 +59,8 @@ exports.getPokemonId = function(request,reply){
         var pokemonInfo = {};
         
         pokemonInfo.id = response.id;
-        //pokemonInfo.url = response.pokemon.url;
         pokemonInfo.name = response.name;
+        //Fix the type problem
         pokemonInfo.type_one = response.types[0].type.name;
         //pokemonInfo.type_two = response.types[1].type.name;
         pokemonInfo.height = response.height;
