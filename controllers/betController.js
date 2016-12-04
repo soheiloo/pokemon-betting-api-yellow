@@ -52,6 +52,23 @@ exports.updateBet = function(request, reply){
 
 exports.saveBet = function (request, reply) {
 
+    var payload = request.payload;
+    battleClient.getBattle(payload.battleId, function(battle){
+        if(battle == undefined){
+            reply("Unknown battle").code(404);
+            return;
+        }
+
+        if(battle.team1.trainer.id != payload.trainerId && battle.team2.trainer.id != payload.trainerId){
+            reply("Unknown trainer").code(404);
+            return;
+        }
+
+        var user =
+
+
+    });
+
     getNotFinishedBattles(request.params.query_string, function(response){
         var battleId = request.query.battleId;
         var trainerId = request.query.trainerId;
