@@ -59,7 +59,7 @@ var getAuthenticatedUserConfig = new RouteConfigBuilder()
 server.route({
     method: 'GET',
     path: '/users/me',
-    handler: UserController.getAuthenticatedUser,
+    handler: UserController.replyWithAuthenticatedUser
     config: getAuthenticatedUserConfig
 });
 

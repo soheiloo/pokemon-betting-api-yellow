@@ -2,6 +2,7 @@ const Bet = require('../models/bet').Bet;
 const _ = require('underscore');
 const auth = require('../config/auth');
 const battleClient = require('../config/battleClient');
+const userController = require('../controllers/userController');
 
 
 var exports = module.exports = {};
@@ -55,44 +56,28 @@ exports.saveBet = function (request, reply) {
     var payload = request.payload;
     battleClient.getBattle(payload.battleId, function(battle){
         if(battle == undefined){
-            reply("Unknown battle").code(404);
+            reply("Unknown battle.").code(404);
             return;
         }
 
         if(battle.team1.trainer.id != payload.trainerId && battle.team2.trainer.id != payload.trainerId){
-            reply("Unknown trainer").code(404);
+            reply("Unknown trainer.").code(404);
             return;
         }
 
-        var user =
-
-
-    });
-
-    getNotFinishedBattles(request.params.query_string, function(response){
-        var battleId = request.query.battleId;
-        var trainerId = request.query.trainerId;
-        for(var i = 0; i < response.length; i++){
-            if((response[i].id === battleId) && (response[i].team1.trainer.id === trainerId || response[i].team2.trainer.id === trainerId)){
-                 Bet.create({
-                    battleId: request.query.battleId,
-                    trainerId: request.query.trainerId,
-                    amount: request.payload.amount,
-                })
-                .then(function (bet) {
-                    bet = {
-                        id: bet.id,
-                        battleId: request.query.battleId,
-                        trainerId: request.query.trainerId,
-                        amount: request.payload.amount,
-                    };
-                    reply(bet).code(201);
-                })
-            }
-            if(response.length - 1 === i){
-                reply(console.error("Put a right battle id or trainer id!"));         
+        var user = userController.getAuthenticatedUser(request, function(user){
+            if(user.balance <= payload.amount){
+                reply("Insufficient balance.").code(403);
+                return;
             }
 
-        }
+            Bet.create({
+                battleId: payload.battleId,
+                trainerId: payload.trainerId,
+                amount: payload.amount
+            }).then(function (bet){
+                reply(bet).code(201);
+            });
+        })
     });
 };
