@@ -30,3 +30,5 @@ server.register([
 ]);
 
 server.start();
+
+console.log("Server is up and running.");
