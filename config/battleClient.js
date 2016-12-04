@@ -58,6 +58,10 @@ exports.getPokemonTypes = function (opts) {
 };
 
 //battle routes
+exports.getBattle = function(battleId){
+    return requestWithOptionalParams("battles", {id: battleId});
+};
+
 exports.getBattles = function (opts) {
     return requestWithOptionalParams("battles", opts);
 };

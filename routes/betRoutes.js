@@ -49,15 +49,9 @@ server.route({
 // Create new bet
 var createBetConfig = new RouteConfigBuilder()
     .setDescription('Create new bets')
-    .setAuth(false)
+    .setAuth(true)
     .setPayloadSchema({
         amount: Joi.number().integer().positive()
-
-    })
-    .setParams({
-        query_string: Joi.string()
-    })
-    .setQuery({
         battleId: BetSchemata.betBattleIdQuerySchema,
         trainerId: BetSchemata.betTrainerIdQuerySchema
     })
@@ -65,6 +59,12 @@ var createBetConfig = new RouteConfigBuilder()
         201: {
             description: 'Created',
             schema: BetSchemata.betSchema
+        },
+        403:{
+            description: 'Insufficient balance for placing a bet.'
+        },
+        404:{
+            description: 'Battle or trainer not found.'
         }
     })
     .build();
