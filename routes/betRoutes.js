@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const BetController = require('../controllers/betController');
 const BetSchemata = require('../validators/betSchemata');
+const CommonSchemata = require('../validators/commonSchemata');
 const server = require('../config/server').server;
 const RouteConfigBuilder = require('../config/routeConfigBuilder').RouteConfigBuilder;
 
@@ -49,11 +50,10 @@ server.route({
 // Create new bet
 var createBetConfig = new RouteConfigBuilder()
     .setDescription('Create new bets')
-    .setAuth(true)
     .setPayloadSchema({
-        amount: Joi.number().integer().positive()
-        battleId: BetSchemata.betBattleIdQuerySchema,
-        trainerId: BetSchemata.betTrainerIdQuerySchema
+        amount: Joi.number().integer().positive(),
+        battleId: CommonSchemata.databaseIdSchema,
+        trainerId: CommonSchemata.databaseIdSchema
     })
     .setResponses({
         201: {
@@ -61,7 +61,7 @@ var createBetConfig = new RouteConfigBuilder()
             schema: BetSchemata.betSchema
         },
         403:{
-            description: 'Insufficient balance for placing a bet.'
+            description: 'Insufficient balance for placing a bet or betting on a finished battle.'
         },
         404:{
             description: 'Battle or trainer not found.'
@@ -72,7 +72,7 @@ var createBetConfig = new RouteConfigBuilder()
 //Post a new bet
 server.route({
     method: 'POST',
-    path: '/bets/{query_string}/',
+    path: '/bets',
     handler: BetController.saveBet,
     config: createBetConfig
 });

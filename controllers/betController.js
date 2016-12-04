@@ -28,45 +28,51 @@ exports.getBets = function (request, reply) {
                 id: bet.id,
                 battleId: bet.battleId,
                 trainerId: bet.trainerId,
-                amount: bet.amount}
+                amount: bet.amount
+            }
         });
         reply(bets).code(200);
     })
 };
 
-exports.getBetId = function(request, reply){
-    Bet.findById(request.params.id).then(function(bet){
+exports.getBetId = function (request, reply) {
+    Bet.findById(request.params.id).then(function (bet) {
         reply(bet).code(200);
     })
 };
 
-exports.updateBet = function(request, reply){
-    Bet.findById(request.params.id).then(function(bet){
-       for(var attrName in request.payload){
+exports.updateBet = function (request, reply) {
+    Bet.findById(request.params.id).then(function (bet) {
+        for (var attrName in request.payload) {
             bet[attrName] = request.payload[attrName];
         }
         bet.save();
-        
+
         return reply(bet).code(200);
     })
 };
 
 exports.saveBet = function (request, reply) {
-
     var payload = request.payload;
-    battleClient.getBattle(payload.battleId, function(battle){
-        if(battle == undefined){
+    battleClient.getBattle(payload.battleId).end(function(response){
+        var battle = response.body;
+        if (battle.id == undefined) {
             reply("Unknown battle.").code(404);
             return;
         }
 
-        if(battle.team1.trainer.id != payload.trainerId && battle.team2.trainer.id != payload.trainerId){
+        if(battle.end_time != undefined){
+            reply("Cannot bet on a finished battle.").code(403);
+            return;
+        }
+
+        if (battle.team1.trainer.id != payload.trainerId && battle.team2.trainer.id != payload.trainerId) {
             reply("Unknown trainer.").code(404);
             return;
         }
 
-        var user = userController.getAuthenticatedUser(request, function(user){
-            if(user.balance <= payload.amount){
+        var user = userController.getAuthenticatedUser(request, function (user) {
+            if (user.balance <= payload.amount) {
                 reply("Insufficient balance.").code(403);
                 return;
             }
@@ -75,7 +81,7 @@ exports.saveBet = function (request, reply) {
                 battleId: payload.battleId,
                 trainerId: payload.trainerId,
                 amount: payload.amount
-            }).then(function (bet){
+            }).then(function (bet) {
                 reply(bet).code(201);
             });
         })
