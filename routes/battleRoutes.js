@@ -4,19 +4,6 @@ const RouteConfigBuilder = require('../config/routeConfigBuilder').RouteConfigBu
 const server = require('../config/server').server;
 const Joi = require('joi');
 
-var getBattlesConfig = new RouteConfigBuilder()
-    .setDescription('Get battles from BattleAPI')
-    .setAuth(false)
-    .setParams({
-        query_string: Joi.string()
-    })
-    .setResponses({
-        200: {
-            description: 'Success',
-            schema: BattleSchemata.multipleBattlesSchema
-        }
-    }).build();
-
 var getPotsConfig = new RouteConfigBuilder()
     .setDescription('Get Pots for a battle')
     .setAuth(false)
@@ -29,13 +16,6 @@ var getPotsConfig = new RouteConfigBuilder()
             schema: BattleSchemata.battlePots
         }
     }).build();
-
-server.route({
-    method: 'GET',
-    path: '/battles/{query_string}',
-    handler: BattleController.getBattles,
-    config: getBattlesConfig
-});
 
 server.route({
     method: 'GET',
