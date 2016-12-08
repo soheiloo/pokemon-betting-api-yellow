@@ -38,7 +38,7 @@ exports.getAuthenticatedUser = function(request, callback){
 };
 
 exports.replyWithAuthenticatedUser = function(request, reply){
-    getAuthenticatedUser(request, function(user){
+    exports.getAuthenticatedUser(request, function(user){
         reply(user).code(200);
     });
 };
