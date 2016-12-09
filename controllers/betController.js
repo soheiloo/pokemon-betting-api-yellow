@@ -1,4 +1,6 @@
 const Bet = require('../models/bet').Bet;
+const Transaction = require('../models/transaction').Transaction;
+const TransactionType = require('../models/transaction').TransactionType;
 const _ = require('underscore');
 const auth = require('../config/auth');
 const battleClient = require('../config/battleClient');
@@ -71,18 +73,29 @@ exports.saveBet = function (request, reply) {
             return;
         }
 
-        var user = userController.getAuthenticatedUser(request, function (user) {
+        userController.getAuthenticatedUser(request, function (user) {
             if (user.balance <= payload.amount) {
                 reply("Insufficient balance.").code(403);
                 return;
             }
 
-            Bet.create({
-                battleId: payload.battleId,
-                trainerId: payload.trainerId,
-                amount: payload.amount
-            }).then(function (bet) {
-                reply(bet).code(201);
+            Transaction.create({
+                user_id: user.id,
+                amount: payload.amount,
+                type: TransactionType.BET_COST
+            }).then(function(transaction){
+
+                Bet.create({
+                    battleId: payload.battleId,
+                    trainerId: payload.trainerId,
+                    amount: payload.amount
+                }).then(function (bet) {
+                    user.balance = user.balance - payload.amount;
+                    user.save().then(function(){
+                        reply(bet).code(201);
+                    });
+                });
+
             });
         })
     });
