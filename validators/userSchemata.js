@@ -20,7 +20,17 @@ var amountSchema = Joi.number()
     .description('The amount to be withdrawn/deposited')
     .default(0);
 
+var transactionSchema = Joi.object({
+    user_id: userIdSchema,
+    amount: Joi.number().integer(),
+    type: Joi.string()
+});
+
+var transactionsSchema = Joi.array().items(transactionSchema);
+
 exports.userSchema = userSchema;
 exports.userIdSchema = userIdSchema;
 exports.amountSchema = amountSchema;
 exports.multipleUsersSchema = Joi.array().items(userSchema);
+exports.transactionSchema = transactionSchema;
+exports.transactionsSchema = transactionsSchema;

@@ -42,7 +42,7 @@ server.route({
     method: 'GET',
     path: '/users/{id}',
     handler: UserController.getUserId,
-    config:getUserIdConfig
+    config: getUserIdConfig
 });
 
 // Get currently authenticated user
@@ -88,7 +88,7 @@ server.route({
 var depositConfig = new RouteConfigBuilder()
     .setDescription('Deposit money to current user\'s balance')
     .setParams({
-      amount: UserSchemata.amountSchema
+        amount: UserSchemata.amountSchema
     })
     .setResponses({
         204: {
@@ -108,7 +108,7 @@ server.route({
 var withdrawConfig = new RouteConfigBuilder()
     .setDescription('Withdraw money from current user\'s balance')
     .setParams({
-      amount: UserSchemata.amountSchema
+        amount: UserSchemata.amountSchema
     })
     .setResponses({
         204: {
@@ -137,7 +137,7 @@ var patchUserConfig = new RouteConfigBuilder()
 
     .setPayloadSchema(UserSchemata.userSchema)
     .setResponses({
-        200:{
+        200: {
             description: 'Updated',
             schema: UserSchemata.userSchema
         }
@@ -149,4 +149,28 @@ server.route({
     path: '/users/{id}',
     handler: UserController.updateUser,
     config: patchUserConfig
+});
+
+var getTransactionsConfig = new RouteConfigBuilder()
+    .setDescription('Get transactions for the current user. User id must match the id of the currently authenticated user.')
+    .setParams({
+        id: UserSchemata.userIdSchema
+    })
+    .setResponses({
+            200: {
+                description: 'Success',
+                schema: UserSchemata.transactionsSchema
+            },
+            403: {
+                description: 'Cannot get transaction of different user.'
+            }
+        }
+    )
+    .build();
+
+server.route({
+    method: 'GET',
+    path: '/users/{id}/transactions',
+    handler: UserController.getTransactions,
+    config: getTransactionsConfig
 });
