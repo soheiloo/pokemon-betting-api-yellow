@@ -27,18 +27,18 @@ exports.getUserId = function(request, reply){
 exports.getAuthenticatedUser = function(request, callback){
     var userId = request.auth.credentials.sub;
     User.findById(userId).then(function(user){
+        callback(user);
+    })
+};
+
+exports.replyWithAuthenticatedUser = function(request, reply){
+    exports.getAuthenticatedUser(request, function(user){
         user = {
             id: user.id,
             username: user.username,
             email: user.email,
             balance: user.balance
         };
-        callback(user);
-    })
-};
-
-exports.replyWithAuthenticatedUser = function(request, reply){
-    getAuthenticatedUser(request, function(user){
         reply(user).code(200);
     });
 };
