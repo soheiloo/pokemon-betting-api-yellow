@@ -18,6 +18,10 @@ exports.getUsers = function (request, reply) {
     })
 };
 
+function getUserIdFromRequest(request){
+    return request.auth.credentials.sub;
+}
+
 exports.getUserId = function(request, reply){
     User.findById(request.params.id).then(function(user){
         reply(user).code(200);
@@ -25,7 +29,7 @@ exports.getUserId = function(request, reply){
 };
 
 exports.getAuthenticatedUser = function(request, callback){
-    var userId = request.auth.credentials.sub;
+    var userId = getUserIdFromRequest(request);
     User.findById(userId).then(function(user){
         callback(user);
     })
@@ -81,7 +85,7 @@ exports.saveUser = function (request, reply) {
 
 exports.deposit = function (request, reply) {
     var amount = request.params.amount;
-    var userId = request.auth.credentials.sub;
+    var userId = getUserIdFromRequest(request);
     User.findById(userId).then(user => {
         user.balance += amount;
         user.save().then(() => {
@@ -94,7 +98,7 @@ exports.deposit = function (request, reply) {
 
 exports.withdraw = function (request, reply) {
     var amount = request.params.amount;
-    var userId = request.auth.credentials.sub;
+    var userId = getUserIdFromRequest(request);
     User.findById(userId).then(user => {
         if (user.balance < amount) {
             return reply('Insufficient funds').code(400);
