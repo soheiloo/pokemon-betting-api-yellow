@@ -1,4 +1,4 @@
-//const battleLogController = require('../controllers/battleLogController');
+const leaderboardController = require('../controllers/leaderboardController');
 const leaderboardSchemata = require('../validators/leaderboardSchemata');
 const RouteConfigBuilder = require('../config/routeConfigBuilder').RouteConfigBuilder;
 const server = require('../config/server').server;
@@ -17,6 +17,6 @@ var getLeaderboardConfig = new RouteConfigBuilder()
 server.route({
     method: 'GET',
     path: '/leaderboard',
-    handler: battleLogController.getBattleLog,
+    handler: leaderboardController.getLeaderboard,
     config: getLeaderboardConfig
 });

@@ -1,9 +1,20 @@
+const userSchemata = require('../validators/userSchemata');
+const User = require('../models/user').User;
 const Sequelize = require('sequelize');
 const dataBase = require('../config/database').dataBase;
 
 var exports = module.exports = {};
 
+var BetStatus = {
+    RUNNING: 'running',
+    WON: 'won',
+    LOST: 'lost',
+};
+exports.BetStatus=BetStatus;
+
 var Bet = dataBase.define('bet', {
+
+    //user_id: userSchemata.userIdSchema,
 
     battleId:{
         type: Sequelize.STRING,
@@ -25,19 +36,15 @@ var Bet = dataBase.define('bet', {
     },
 
     status: {
-        type:Sequelize.ENUM,
+        type: Sequelize.DataTypes.ENUM(BetStatus.RUNNING, BetStatus.WON, BetStatus.LOST),
         values:['running','won','lost'],
-        defaultValue: 'running',
+        defaultValue: BetStatus.RUNNING,
         allowNull: false
     }
 });
+Bet.belongsTo(User, {foreignKey: 'user_id'});
+//User.hasMany(Bet, {foreignKey: 'user_id'});
 
-Bet.sync();
-
-Bet.build({battleId: 1, userId:1});
-Bet.build({battleId: 2, userId:1});
-Bet.build({battleId: 3, userId:1});
-Bet.build({battleId: 4, userId:2});
-
+Bet.sync({force: true});
 
 exports.Bet = Bet;
