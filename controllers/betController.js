@@ -86,6 +86,7 @@ exports.saveBet = function (request, reply) {
             }).then(function(transaction){
 
                 Bet.create({
+                    user_id: user.id,
                     battleId: payload.battleId,
                     trainerId: payload.trainerId,
                     amount: payload.amount

@@ -37,7 +37,6 @@ var Bet = dataBase.define('bet', {
 
     status: {
         type: Sequelize.DataTypes.ENUM(BetStatus.RUNNING, BetStatus.WON, BetStatus.LOST),
-        values:['running','won','lost'],
         defaultValue: BetStatus.RUNNING,
         allowNull: false
     }
