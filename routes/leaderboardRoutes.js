@@ -5,7 +5,7 @@ const server = require('../config/server').server;
 const Joi = require('joi');
 
 var getLeaderboardConfig = new RouteConfigBuilder()
-    .setDescription('Get all users order by how many bets they won')
+    .setDescription('Returns name and number of winning bets of each user. Ordered by number of wins. Users with no wins are ignored.')
     .setAuth(false)
     .setResponses({
         200: {
