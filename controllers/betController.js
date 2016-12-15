@@ -56,7 +56,7 @@ exports.updateBet = function (request, reply) {
 
 exports.saveBet = function (request, reply) {
     var payload = request.payload;
-    battleClient.getBattle(payload.battleId).end(function(response){
+    battleClient.getBattle(payload.battle_id).end(function(response){
         var battle = response.body;
         if (battle.id == undefined) {
             reply("Unknown battle.").code(404);
@@ -68,7 +68,7 @@ exports.saveBet = function (request, reply) {
             return;
         }
 
-        if (battle.team1.trainer.id != payload.trainerId && battle.team2.trainer.id != payload.trainerId) {
+        if (battle.team1.trainer.id != payload.trainer_id && battle.team2.trainer.id != payload.trainer_id) {
             reply("Unknown trainer.").code(404);
             return;
         }
@@ -87,8 +87,8 @@ exports.saveBet = function (request, reply) {
 
                 Bet.create({
                     user_id: user.id,
-                    battleId: payload.battleId,
-                    trainerId: payload.trainerId,
+                    battleId: payload.battle_id,
+                    trainerId: payload.trainer_id,
                     amount: payload.amount
                 }).then(function (bet) {
                     user.balance = user.balance - payload.amount;
