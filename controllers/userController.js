@@ -30,6 +30,12 @@ exports.getUserId = function (request, reply) {
     })
 };
 
+exports.getUser = function(userId, callback){
+    User.findById(userId).then(function(user){
+        callback(user);
+    });
+};
+
 exports.getAuthenticatedUser = function (request, callback) {
     var userId = getUserIdFromRequest(request);
     User.findById(userId).then(function (user) {
