@@ -25,14 +25,6 @@ function getNotFinishedBattles(queryString, callback) {
 
 exports.getBets = function (request, reply) {
     Bet.findAll().then(function (bets) {
-        bets = _.map(bets, function (bet) {
-            return {
-                id: bet.id,
-                battleId: bet.battleId,
-                trainerId: bet.trainerId,
-                amount: bet.amount
-            }
-        });
         reply(bets).code(200);
     })
 };
