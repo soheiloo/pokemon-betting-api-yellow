@@ -44,6 +44,7 @@ var Bet = dataBase.define('bet', {
 Bet.belongsTo(User, {foreignKey: 'user_id'});
 //User.hasMany(Bet, {foreignKey: 'user_id'});
 
-Bet.sync({force: true});
+//Bet.sync({force: true});
+Bet.sync();
 
 exports.Bet = Bet;
