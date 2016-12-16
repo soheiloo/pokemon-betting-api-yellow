@@ -1,4 +1,4 @@
-FROM node:7.0.0
+FROM node:7.2.1
 
 MAINTAINER pokemon-yellow
 
@@ -14,6 +14,6 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 8080
+EXPOSE 5000
 
 CMD ["node", "."]
