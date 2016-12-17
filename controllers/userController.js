@@ -55,10 +55,10 @@ exports.replyWithAuthenticatedUser = function (request, reply) {
     });
 };
 
-exports.updateUser = function (request, reply) {
-    User.findById(request.params.id).then(function (user) {
-        for (var attrName in request.payload) {
-            if (attrName === 'password') {
+exports.updateUser = function(request, reply){
+    User.findById(request.params.id).then(function(user){
+       for (var attrName in request.orig.payload){
+            if(attrName === 'password'){
                 var hashPassword = auth.createHash(request.payload[attrName]);
                 user[attrName] = hashPassword;
             } else {
@@ -92,8 +92,14 @@ exports.saveUser = function (request, reply) {
 };
 
 exports.deposit = function (request, reply) {
-    var amount = request.params.amount;
+    var amount = request.payload.amount;
     var userId = getUserIdFromRequest(request);
+    console.log(userId);
+    console.log(request.auth.credentials.sub);
+    if (userId != request.auth.credentials.sub) {
+      reply().code(403); // User can only deposit to his own account
+      return;
+    }
     User.findById(userId).then(user => {
         user.balance += amount;
         user.save().then(() => {
@@ -105,8 +111,12 @@ exports.deposit = function (request, reply) {
 };
 
 exports.withdraw = function (request, reply) {
-    var amount = request.params.amount;
+    var amount = request.payload.amount;
     var userId = getUserIdFromRequest(request);
+    if (userId != request.auth.credentials.sub) {
+      reply().code(403); // User can only withdraw from his own account
+      return;
+    }
     User.findById(userId).then(user => {
         if (user.balance < amount) {
             return reply('Insufficient funds').code(400);

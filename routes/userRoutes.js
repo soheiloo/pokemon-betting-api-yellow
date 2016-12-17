@@ -88,18 +88,24 @@ server.route({
 var depositConfig = new RouteConfigBuilder()
     .setDescription('Deposit money to current user\'s balance')
     .setParams({
-        amount: UserSchemata.amountSchema
+        id: UserSchemata.userIdSchema
+    })
+    .setPayloadSchema({
+      amount: UserSchemata.amountSchema
     })
     .setResponses({
         204: {
             description: 'Money deposited'
+        },
+        403: {
+            description: 'Not authorized to deposit money to this user'
         }
     })
     .build();
 
 server.route({
     method: 'POST',
-    path: '/users/me/deposit/{amount}',
+    path: '/users/{id}/deposit',
     handler: UserController.deposit,
     config: depositConfig
 });
@@ -108,7 +114,10 @@ server.route({
 var withdrawConfig = new RouteConfigBuilder()
     .setDescription('Withdraw money from current user\'s balance')
     .setParams({
-        amount: UserSchemata.amountSchema
+      id: UserSchemata.userIdSchema
+    })
+    .setPayloadSchema({
+      amount: UserSchemata.amountSchema
     })
     .setResponses({
         204: {
@@ -116,13 +125,16 @@ var withdrawConfig = new RouteConfigBuilder()
         },
         400: {
             description: 'Insufficient funds'
+        },
+        403: {
+            description: 'Not authorized to withdraw money from this user'
         }
     })
     .build();
 
 server.route({
     method: 'POST',
-    path: '/users/me/withdraw/{amount}',
+    path: '/users/{id}/withdraw',
     handler: UserController.withdraw,
     config: withdrawConfig
 });
