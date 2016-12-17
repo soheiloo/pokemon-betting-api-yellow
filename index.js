@@ -17,7 +17,7 @@ const swaggerOptions = {
         'title' : 'Betting API Yellow',
         'version': '1.0'
     },
-    documentationPath: '/'
+    documentationPath: '/doc'
 };
 
 server.register([
@@ -30,5 +30,3 @@ server.register([
 ]);
 
 server.start();
-
-console.log("Server is up and running.");
