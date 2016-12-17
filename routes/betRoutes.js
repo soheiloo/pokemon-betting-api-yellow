@@ -52,8 +52,8 @@ var createBetConfig = new RouteConfigBuilder()
     .setDescription('Create new bets')
     .setPayloadSchema({
         amount: Joi.number().integer().positive(),
-        battleId: CommonSchemata.databaseIdSchema,
-        trainerId: CommonSchemata.databaseIdSchema
+        battle_id: CommonSchemata.databaseIdSchema,
+        trainer_id: CommonSchemata.databaseIdSchema
     })
     .setResponses({
         201: {

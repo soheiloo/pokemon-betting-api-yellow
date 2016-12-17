@@ -5,7 +5,8 @@ var exports = module.exports = {};
 var betSchema = Joi.object({
     battleId: Joi.number().integer().positive(),
     trainerId: Joi.number().integer().positive(),
-    amount: Joi.number().integer().positive().default(0)
+    amount: Joi.number().integer().positive().default(0),
+    status: Joi.valid('running','won','lost')
 });
 
 var betIdSchema = Joi.string()
