@@ -152,7 +152,7 @@ exports.getTransactions = function (request, reply) {
         return;
     }
 
-    Transaction.filter({
+    Transaction.findAll({
         where: {
             user_id: userId
         }
