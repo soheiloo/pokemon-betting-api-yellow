@@ -88,6 +88,9 @@ server.route({
 var depositConfig = new RouteConfigBuilder()
     .setDescription('Deposit money to current user\'s balance')
     .setParams({
+        id: UserSchemata.userIdSchema
+    })
+    .setPayloadSchema({
       amount: UserSchemata.amountSchema
     })
     .setResponses({
@@ -99,7 +102,7 @@ var depositConfig = new RouteConfigBuilder()
 
 server.route({
     method: 'POST',
-    path: '/users/me/deposit/{amount}',
+    path: '/users/{id}/deposit',
     handler: UserController.deposit,
     config: depositConfig
 });
@@ -108,6 +111,9 @@ server.route({
 var withdrawConfig = new RouteConfigBuilder()
     .setDescription('Withdraw money from current user\'s balance')
     .setParams({
+      id: UserSchemata.userIdSchema
+    })
+    .setPayloadSchema({
       amount: UserSchemata.amountSchema
     })
     .setResponses({
@@ -122,7 +128,7 @@ var withdrawConfig = new RouteConfigBuilder()
 
 server.route({
     method: 'POST',
-    path: '/users/me/withdraw/{amount}',
+    path: '/users/{id}/withdraw',
     handler: UserController.withdraw,
     config: withdrawConfig
 });
