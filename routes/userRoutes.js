@@ -96,6 +96,9 @@ var depositConfig = new RouteConfigBuilder()
     .setResponses({
         204: {
             description: 'Money deposited'
+        },
+        403: {
+            description: 'Not authorized to deposit money to this user'
         }
     })
     .build();
@@ -122,6 +125,9 @@ var withdrawConfig = new RouteConfigBuilder()
         },
         400: {
             description: 'Insufficient funds'
+        },
+        403: {
+            description: 'Not authorized to withdraw money from this user'
         }
     })
     .build();

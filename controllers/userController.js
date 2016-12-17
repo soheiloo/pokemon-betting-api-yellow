@@ -80,8 +80,11 @@ exports.saveUser = function (request, reply) {
 };
 
 exports.deposit = function (request, reply) {
-    var amount = request.params.amount;
-    var userId = request.auth.credentials.sub;
+    var amount = request.payload.amount;
+    var userId = request.params.id;
+    if (userId !== request.auth.credentials.sub) {
+      reply().code(403); // User can only deposit to his own account
+    }
     User.findById(userId).then(user => {
         user.balance += amount;
         user.save().then(() => {
@@ -93,8 +96,11 @@ exports.deposit = function (request, reply) {
 };
 
 exports.withdraw = function (request, reply) {
-    var amount = request.params.amount;
-    var userId = request.auth.credentials.sub;
+    var amount = request.payload.amount;
+    var userId = request.params.id;
+    if (userId !== request.auth.credentials.sub) {
+      reply().code(403); // User can only withdraw from his own account
+    }
     User.findById(userId).then(user => {
         if (user.balance < amount) {
             return reply('Insufficient funds').code(400);
