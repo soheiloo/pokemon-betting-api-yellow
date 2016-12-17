@@ -45,7 +45,7 @@ exports.replyWithAuthenticatedUser = function(request, reply){
 
 exports.updateUser = function(request, reply){
     User.findById(request.params.id).then(function(user){
-       for(var attrName in request.payload){
+       for(var attrName in request.orig.payload){
             if(attrName === 'password'){
                 var hashPassword = auth.createHash(request.payload[attrName]);
                 user[attrName] = hashPassword;
