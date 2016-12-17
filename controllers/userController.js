@@ -1,5 +1,6 @@
 const User = require('../models/user').User;
 const Transaction = require('../models/transaction').Transaction;
+const TransactionType = require('../models/transaction').TransactionType;
 const _ = require('underscore');
 const auth = require('../config/auth');
 
@@ -100,12 +101,18 @@ exports.deposit = function (request, reply) {
       reply().code(403); // User can only deposit to his own account
       return;
     }
-    User.findById(userId).then(user => {
-        user.balance += amount;
-        user.save().then(() => {
-            reply().code(204);
-        }).catch(error => {
-            reply().code(500);
+    Transaction.create({
+        user_id: userId,
+        amount: amount,
+        type: TransactionType.DEPOSIT
+    }).then(transaction => {
+        User.findById(userId).then(user => {
+            user.balance += amount;
+            user.save().then(() => {
+                reply().code(204);
+            }).catch(error => {
+                reply().code(500);
+            });
         });
     });
 };
@@ -121,11 +128,17 @@ exports.withdraw = function (request, reply) {
         if (user.balance < amount) {
             return reply('Insufficient funds').code(400);
         }
-        user.balance -= amount;
-        user.save().then(() => {
-            reply().code(204);
-        }).catch(error => {
-            reply().code(500);
+        Transaction.create({
+            user_id: userId,
+            amount: -amount,
+            type: TransactionType.WITHDRAWAL
+        }).then(transaction => {
+            user.balance -= amount;
+            user.save().then(() => {
+                reply().code(204);
+            }).catch(error => {
+                reply().code(500);
+            });
         });
     });
 };
