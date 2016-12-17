@@ -4,38 +4,6 @@ const battleClient = require('../config/battleClient');
 
 var exports = module.exports = {};
 
-function getBattlesForQuery(queryString, callback) {
-    var pairs = queryString.split("&");
-
-    var id = pairs.find(function (str) {
-        return str.startsWith("id")
-    });
-    var lim = pairs.find(function (str) {
-        return str.startsWith("limit")
-    });
-    var offs = pairs.find(function (str) {
-        return str.startsWith("offset")
-    });
-    var isF = pairs.find(function (str) {
-        return str.startsWith("is_finished")
-    });
-
-    var obj = {};
-    if (typeof id !== "undefined")
-        obj["id"] = id.split("=")[1];
-    if (typeof lim !== "undefined")
-        obj["limit"] = lim.split("=")[1];
-    if (typeof offs !== "undefined")
-        obj["offset"] = offs.split("=")[1];
-    if (typeof isF !== "undefined")
-        obj["is_finished"] = isF.split("=")[1];
-
-    //battleClient.getBattles({limit: lim.split("=")[1], offset: offs.split("=")[1], is_finished: isF.split("=")[1]})
-    battleClient.getBattles(obj)
-        .end(function (response) {
-            callback(response.body);
-        })
-}
 
 exports.getPots = function (request, reply) {
     var battleId = request.params.id;
@@ -64,16 +32,9 @@ exports.getPots = function (request, reply) {
         });
 };
 
-exports.getBattles = function (request, reply) {
-    var queryString = request.params.query_string;
-    getBattlesForQuery(queryString, function (response) {
-        reply(response).code(200);
-    });
-};
-
 exports.getNextBattles = function (callback) {
-    var queryString = "limit=5&offset=0&is_finished=false";
-    getBattlesForQuery(queryString, function (response) {
-        callback(response);
+    var opts={limit:5, offset:0, is_finished:false};
+    battleClient.getBattles(opts).end(function (response) {
+        callback(response.body);
     })
 };
