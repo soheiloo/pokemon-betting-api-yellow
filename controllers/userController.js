@@ -82,8 +82,11 @@ exports.saveUser = function (request, reply) {
 exports.deposit = function (request, reply) {
     var amount = request.payload.amount;
     var userId = request.params.id;
-    if (userId !== request.auth.credentials.sub) {
+    console.log(userId);
+    console.log(request.auth.credentials.sub);
+    if (userId != request.auth.credentials.sub) {
       reply().code(403); // User can only deposit to his own account
+      return;
     }
     User.findById(userId).then(user => {
         user.balance += amount;
@@ -98,8 +101,9 @@ exports.deposit = function (request, reply) {
 exports.withdraw = function (request, reply) {
     var amount = request.payload.amount;
     var userId = request.params.id;
-    if (userId !== request.auth.credentials.sub) {
+    if (userId != request.auth.credentials.sub) {
       reply().code(403); // User can only withdraw from his own account
+      return;
     }
     User.findById(userId).then(user => {
         if (user.balance < amount) {
