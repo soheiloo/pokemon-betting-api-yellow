@@ -42,7 +42,7 @@ server.route({
     method: 'GET',
     path: '/users/{id}',
     handler: UserController.getUserId,
-    config: getUserIdConfig
+    config:getUserIdConfig
 });
 
 // Get currently authenticated user
@@ -59,7 +59,7 @@ var getAuthenticatedUserConfig = new RouteConfigBuilder()
 server.route({
     method: 'GET',
     path: '/users/me',
-    handler: UserController.replyWithAuthenticatedUser,
+    handler: UserController.getAuthenticatedUser,
     config: getAuthenticatedUserConfig
 });
 
@@ -88,24 +88,18 @@ server.route({
 var depositConfig = new RouteConfigBuilder()
     .setDescription('Deposit money to current user\'s balance')
     .setParams({
-        id: UserSchemata.userIdSchema
-    })
-    .setPayloadSchema({
       amount: UserSchemata.amountSchema
     })
     .setResponses({
         204: {
             description: 'Money deposited'
-        },
-        403: {
-            description: 'Not authorized to deposit money to this user'
         }
     })
     .build();
 
 server.route({
     method: 'POST',
-    path: '/users/{id}/deposit',
+    path: '/users/me/deposit/{amount}',
     handler: UserController.deposit,
     config: depositConfig
 });
@@ -114,9 +108,6 @@ server.route({
 var withdrawConfig = new RouteConfigBuilder()
     .setDescription('Withdraw money from current user\'s balance')
     .setParams({
-      id: UserSchemata.userIdSchema
-    })
-    .setPayloadSchema({
       amount: UserSchemata.amountSchema
     })
     .setResponses({
@@ -125,16 +116,13 @@ var withdrawConfig = new RouteConfigBuilder()
         },
         400: {
             description: 'Insufficient funds'
-        },
-        403: {
-            description: 'Not authorized to withdraw money from this user'
         }
     })
     .build();
 
 server.route({
     method: 'POST',
-    path: '/users/{id}/withdraw',
+    path: '/users/me/withdraw/{amount}',
     handler: UserController.withdraw,
     config: withdrawConfig
 });
@@ -149,7 +137,7 @@ var patchUserConfig = new RouteConfigBuilder()
 
     .setPayloadSchema(UserSchemata.userSchema)
     .setResponses({
-        200: {
+        200:{
             description: 'Updated',
             schema: UserSchemata.userSchema
         }
@@ -161,28 +149,4 @@ server.route({
     path: '/users/{id}',
     handler: UserController.updateUser,
     config: patchUserConfig
-});
-
-var getTransactionsConfig = new RouteConfigBuilder()
-    .setDescription('Get transactions for the current user. User id must match the id of the currently authenticated user.')
-    .setParams({
-        id: UserSchemata.userIdSchema
-    })
-    .setResponses({
-            200: {
-                description: 'Success',
-                schema: UserSchemata.transactionsSchema
-            },
-            403: {
-                description: 'Cannot get transaction of different user.'
-            }
-        }
-    )
-    .build();
-
-server.route({
-    method: 'GET',
-    path: '/users/{id}/transactions',
-    handler: UserController.getTransactions,
-    config: getTransactionsConfig
 });
