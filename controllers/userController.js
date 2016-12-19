@@ -101,3 +101,21 @@ exports.withdraw = function (request, reply) {
         });
     });
 };
+
+exports.getTransactions = function (request, reply) {
+    var userId = getUserIdFromRequest(request);
+    var requestedUserId = request.params.id;
+
+    if (userId != requestedUserId) {
+        reply('Cannot request transactions of different user.').code(403);
+        return;
+    }
+
+    Transaction.findAll({
+        where: {
+            user_id: userId
+        }
+    }).then(function (transactions) {
+        reply(transactions).code(200);
+    });
+};
