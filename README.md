@@ -6,12 +6,14 @@ With every commit to develop a docker image is built on dockerhub. The API can a
 
 Pull the image:
 ```
-docker pull mariokaufmann/pokemon-betting-api-yellow```
+docker pull mariokaufmann/pokemon-betting-api-yellow
+```
 
 Run the image:
 
 ```
-docker run -d -p 5000:5000 mariokaufmann/pokemon-betting-api-yellow```
+docker run -d -p 5000:5000 mariokaufmann/pokemon-betting-api-yellow
+```
 
 With the default docker machine and configuration the API is then accessible under: http://192.168.99.100:5000/
 
